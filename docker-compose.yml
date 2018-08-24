@@ -1,0 +1,17 @@
+gocd-server:
+  build: .
+  dockerfile: ./Dockerfile
+  environment:
+    SSL_ENABLE: "true"
+    TRUST_PASSWORD: racing101
+  ports:
+    - "8153:8153"
+    - "8154:8154"
+gocd-agent:
+  image: gocd/gocd-agent-alpine-3.7:v18.7.0
+  environment:
+    GO_SERVER_URL: https://gocd-server:8154/go
+    SSL_ENABLE: "true"
+    TRUST_PASSWORD: racing101
+  links:
+    - "gocd-server"
